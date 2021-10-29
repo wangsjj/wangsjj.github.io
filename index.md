@@ -1,3 +1,64 @@
+# coding:utf-8
+import os
+import webbrowser
+from faker import Faker
+
+fake = Faker(locale="zh_CN")
+xingming = (fake.name())  # 姓名
+dizhi = (fake.address())  # 地址
+shoujihao = (fake.phone_number())  # 手机号
+shenfenzheng = (fake.ssn())  # 身份证号
+import random
+import re
+
+
+def car_num():
+    char0 = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋", "蒙",
+             "陕", "吉", "闽", "赣", "粤", "青", "藏", "川", "宁", "琼"]  # 省份简称
+    char1 = 'ABCDEFGHJKLMNPQRSTUVWXYZ'  # 车牌号中没有I和O
+    char2 = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ'
+
+    id_1 = random.choice(char0)  # 车牌号第一位     省份简称
+    id_2 = ''.join(random.sample(char1, 1))  # 车牌号第二位
+
+    while True:
+        id_3 = ''.join(random.sample(char2, 5))
+        v = id_3.isalpha()  # 所有字符都是字母时返回 true
+        if v == True:
+            continue
+        else:
+            car_id = id_1 + id_2 + id_3
+            # print car_id
+            break
+
+    return car_id
+
+
+chepaihao = (car_num())  # 随机产生车牌号
+# chepaihao=(fake.license_plate())# 随机产生车牌号
+import random
+import string
+
+string_length = 17
+letters_digits = string.ascii_uppercase + string.digits
+chejiahao = (''.join(random.choice(letters_digits) for i in range(string_length)))
+# input("输入任意键结束")
+
+# 命名生成的html
+GEN_HTML = "测试数据.html"
+# 打开文件，准备写入
+f = open(GEN_HTML, 'w')
+
+# 准备相关变量
+str1 = 'xingming :'
+str2 = 'dizhi'
+str2 = 'shoujihao'
+str2 = 'shenfenzheng'
+str2 = 'chepaihao'
+str2 = 'chejiahao'
+
+# 写入HTML界面中
+message = """
 <html>
 <body background="https://sun-mall-stage.oss-cn-shanghai.aliyuncs.com/1/material/45e5f0dc-c0aa-4e86-a968-a6697de6c820.jpg">
 <table border="1">
