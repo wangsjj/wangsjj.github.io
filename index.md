@@ -1,27 +1,20 @@
-<html>
-<table border="1">
-    <tr>
-        <th>姓名</th>
-        <td>%s</td>
-    </tr>
-    <tr>
-        <th>地址</th>
-        <td>%s</td>
-    </tr>
-    <tr>
-        <th>手机号</th>
-        <td>%s</td>
-    </tr>
-    <tr>
-        <th>身份证号</th>
-        <td>%s</td>
-    </tr>
-    <tr>
-        <th>车牌号</th>
-        <td>%s</td>
-    </tr>
-    <tr>
-        <th>车架号</th>
-        <td>%s</td>
-    </tr>
-</table>
+function getRandomByStr(l = 3, s) {
+    if (typeof s !== 'string') { return }
+    var len = +l;    var chars = '';
+
+    while (len--) {
+        chars += s[parseInt(Math.random() * s.length, 10)];
+    }
+    return chars;
+}
+
+function getPlate(total = 1) {
+    var en = 'QWERTYUIOPASDFGHJKLZXCVBNM';
+    var num = '1234567890';
+    var len = +total;
+    while (len--) {
+        console.log(`车牌号 ${total - len}：`, getRandomByStr(2, en) + getRandomByStr(3, num));
+    }
+}
+
+getPlate();
