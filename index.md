@@ -1,7 +1,4 @@
-# 写入HTML界面中
-message = """
 <html>
-<body background="https://sun-mall-stage.oss-cn-shanghai.aliyuncs.com/1/material/45e5f0dc-c0aa-4e86-a968-a6697de6c820.jpg">
 <table border="1">
     <tr>
         <th>姓名</th>
