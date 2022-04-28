@@ -34,3 +34,6 @@ tr:nth-child(odd) td {
 caption {
   padding: 10px;
 }
+body{
+	background-size: 1680px 760px;
+}
