@@ -96,6 +96,30 @@
             background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
             min-height: 100vh;
             padding: 40px 20px;
+            transition: filter 0.3s ease;
+        }
+
+        body.dark-mode {
+            filter: brightness(0.7);
+        }
+
+        .light-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border: 2px solid #6200ea;
+            color: #6200ea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .light-switch:hover {
+            background: #6200ea;
+            color: #fff;
         }
     </style>
     <script>
@@ -115,9 +139,20 @@
             showFireworks();
             randomPerson();
         }
+
+        function toggleLight() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.querySelector('.light-switch');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = '开灯';
+            } else {
+                button.textContent = '关灯';
+            }
+        }
     </script>
 </head>
 <body>
+    <button class="light-switch" onclick="toggleLight()">关灯</button>
     <div class="container">
         <div class="btn-container">
             <button class="btn" onclick="generateWithFireworks()">
