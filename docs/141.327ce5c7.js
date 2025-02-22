@@ -1,10 +1,12 @@
 (window.saladictEntry = window.saladictEntry || []).push([[141], {
     580: function(e, n, t) {
         "use strict";
-        t.r(n);
-        t.d(n, "locale", () => localeData);
-
-        const localeData = {
+        t.r(n),
+        t.d(n, "locale", (function() {
+            return a
+        }
+        ));
+        const a = {
             add: "添加",
             delete: "删除",
             save: "保存",
@@ -65,6 +67,6 @@
                 translation: "翻译模式",
                 nihongo: "日语模式"
             }
-        };
+        }
     }
 }]);

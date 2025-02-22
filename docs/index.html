@@ -1,91 +1,31 @@
 <!DOCTYPE html>
-<html lang="zh">
-
-<head>
-	<meta charset="UTF-8">
-	<title>个人信息生成器</title>
-	<link rel="stylesheet" href="123.css">
-	<script src="person.js"></script>
-	<style>
-		body {
-			background-color: #E1FFFF;
-			font-family: 'Nunito', sans-serif;
-			color: #333;
-		}
-
-		.container {
-			max-width: 960px;
-			margin: 20px auto;
-			padding: 20px;
-			background: #fff;
-			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-			border-radius: 8px;
-		}
-
-		.text-center {
-			text-align: center;
-		}
-
-		.btn-primary {
-			background-color: #007bff;
-			border: none;
-			padding: 10px 20px;
-			color: white;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-
-		.btn-primary:hover {
-			background-color: #0056b3;
-		}
-
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			margin-top: 20px;
-		}
-
-		th,
-		td {
-			padding: 12px;
-			border-bottom: 1px solid #ccc;
-		}
-
-		th {
-			background-color: #f8f9fa;
-		}
-
-		td {
-			background-color: #ffffff;
-		}
-
-		tr:hover {
-			background-color: #f1f1f1;
-		}
-	</style>
-</head>
-
-<body>
-	<div class="container">
-		<h1 class="text-center">个人信息生成器</h1>
-		<button class="btn btn-primary" onclick="randomPerson()">生成随机信息</button>
-		<table id="table" class="table table-striped">
-			<thead>
-				<tr>
-					<th>姓名</th>
-					<th>身份证号</th>
-					<th>手机号</th>
-					<th>银行卡号</th>
-					<th>车牌号</th>
-					<th>车架号</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- JavaScript将在此处插入数据行 -->
-			</tbody>
-		</table>
-	</div>
-</body>
-
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>个人信息</title>
+        <link href="123.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="person.js"></script>
+    </head>
+    <body style="background-color: #E1FFFF;">
+        <div class="container">
+            <h1 class="text-center">个人信息生成器</h1>
+            <button class="btn btn-primary" onclick="randomPerson()">随机生成</button>
+            <table id="table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>身份证号</th>
+                        <th>手机号</th>
+                        <th>银行卡号</th>
+                        <th>车牌号</th>
+                        <th>车架号</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>
