@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>个人信息生成器</title>
-    <link href="123.css" rel="stylesheet" type="text/css">
+    <link href="css.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <script type="text/javascript" src="person.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <style>
         .container {
             margin: 0 auto;
@@ -97,11 +98,29 @@
             padding: 40px 20px;
         }
     </style>
+    <script>
+        function showFireworks() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.3 },
+                gravity: 1.2,
+                scalar: 0.8,
+                startVelocity: 30,
+                ticks: 200
+            });
+        }
+        
+        function generateWithFireworks() {
+            showFireworks();
+            randomPerson();
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="btn-container">
-            <button class="btn" onclick="randomPerson()">
+            <button class="btn" onclick="generateWithFireworks()">
                 <span>生成信息</span>
             </button>
         </div>
@@ -115,8 +134,7 @@
                     <th>车牌号</th>
                     <th>车架号</th>
                     <th>地址</th>
-					<th>备注</th>
-
+                    <th>备注</th>
                 </tr>
             </thead>
             <tbody>
