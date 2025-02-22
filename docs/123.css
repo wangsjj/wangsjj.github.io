@@ -1,41 +1,45 @@
 html {
-  font-family: system-ui;
+  font-family: 'Nunito', sans-serif;
 }
 
 table {
-  border-collapse: separate;
-  border: 2px solid rgb(190, 180, 180);
-  letter-spacing: 1px;
-  font-size: 0.9rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
 }
 
-td, th {
-  border: 1px solid rgb(190, 180, 180);
-  padding: 10px 20px;
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dddddd;
 }
 
 th {
-  background-color: rgb(190, 203, 238);
+  background-color: #f8f9fa;
+  color: #333333;
 }
 
 td {
-  text-align: center;
+  background-color: #ffffff;
+  color: #555555;
 }
 
-tr:nth-child(even) td {
-  background-color: rgb(190, 180, 180);
-}
-
-tr:nth-child(odd) td {
-  border: 1px solid rgb(190, 180, 180);
-  padding: 10px 20px;
+tr:hover {
+  background-color: #f1f1f1;
 }
 
 caption {
+  font-size: 1.5rem;
   padding: 10px;
+  caption-side: top;
 }
-body{
-	background-size: 1680px 760px;
+
+body {
+  background-color: #f4f4f4;
+  background-size: cover;
+  margin: 0;
+  font-size: 16px;
 }
 ---
 ---

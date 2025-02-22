@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>个人信息</title>
-		<link href="123.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="person.js"></script>
-		<body bgcolor="#E1FFFF">
-		<!-- <body background="https://pic.imgdb.cn/item/626a5b0c239250f7c5492b43.jpg"//背景url -->
-	</head>
-	<body>
-		<h1></h1>
-		<button onclick="randomPerson()">随机生成</h1></button>
-		<table id="table">
-			<tr>
-				<th>姓名</th>
-				<th>身份证号</th>
-				<th>手机号</th>
-				<th>银行卡号</th>
-				<th>车牌号</th>
-				<th>车架号</th>
-				<th>备注</th>
-			</tr>
-		</table>
-	</body>
+    <head>
+        <meta charset="utf-8">
+        <title>个人信息</title>
+        <link href="123.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="person.js"></script>
+    </head>
+    <body style="background-color: #E1FFFF;">
+        <div class="container">
+            <h1 class="text-center">个人信息生成器</h1>
+            <button class="btn btn-primary" onclick="randomPerson()">随机生成</button>
+            <table id="table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>身份证号</th>
+                        <th>手机号</th>
+                        <th>银行卡号</th>
+                        <th>车牌号</th>
+                        <th>车架号</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data rows will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>
