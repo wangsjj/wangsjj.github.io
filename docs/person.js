@@ -1,5 +1,5 @@
 
-function Person (name, idCard, mobile, bankCardNo, plateNo, vin) {
+function Person (name, idCard, mobile, bankCardNo, plateNo, vin, address) {
   this.name  = name;
   this.idCardNo = idCard;
   this.mobile = mobile;
@@ -7,6 +7,7 @@ function Person (name, idCard, mobile, bankCardNo, plateNo, vin) {
   this.plateNo = plateNo;
   this.idCardNo = idCard;
   this.vin = vin;
+  this.address = address;
 }
 
 
@@ -22,7 +23,7 @@ function randomPerson(){
                               "<td>" + person.bankCardNo + "</td>" +
                               "<td>" + person.plateNo + "</td>" +
 							  "<td>" + person.idCardNo + "</td>" +
-                            //   "<td></td>" +
+                              "<td>" + person.address + "</td>" +
                               "<td>" + "<input></input>" + "</td>" +
                             "</tr>";
   }
@@ -32,11 +33,21 @@ function randomPerson(){
 function getPersonList(num){
   var persons = [];
   for(var i = 0; i< num; i++){
-    persons[i] = new Person(randomName(), randomIdCard(), randomMobile(), randomBankCard(), randomPlate(), null);
+    persons[i] = new Person(randomName(), randomIdCard(), randomMobile(), randomBankCard(), randomPlate(), null, randomAddress());
   }
   return persons;
 }
 
+function randomAddress() {
+  const streets = ["中山路", "解放路", "和平路", "人民路", "长安街", "北京路", "上海路", "广州街", "深圳路", "南京路"];
+  const city = ["北京市", "上海市", "广州市", "深圳市", "成都市", "杭州市", "重庆市", "武汉市", "西安市", "苏州市"];
+  const district = ["东城区", "西城区", "朝阳区", "海淀区", "福田区", "南山区", "天河区", "白云区", "武侯区", "高新区"];
+  const streetNumber = Math.floor(Math.random() * 1000) + 1;
+  return city[Math.floor(Math.random() * city.length)] + 
+         district[Math.floor(Math.random() * district.length)] + 
+         streets[Math.floor(Math.random() * streets.length)] + 
+         streetNumber + "号";
+}
 
 const provinces = ["京A", "京B", "津A", "冀A", "晋A", "蒙A", "辽A", "吉A", "黑A", "沪A","沪B","沪C","沪D",
              "苏A","苏B", "浙A", "皖A", "闽A", "赣A", "鲁A", "豫A","豫B","豫V", "鄂A", "湘A",
