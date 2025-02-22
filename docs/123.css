@@ -1,39 +1,48 @@
 html {
-  font-family: system-ui;
+  font-family: 'Nunito', 'Arial', sans-serif;
+  background: #f8f9fa;
 }
 
 table {
-  border-collapse: separate;
-  border: 2px solid rgb(190, 180, 180);
-  letter-spacing: 1px;
-  font-size: 0.9rem;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin: 15px 0;
+  border: 1px solid #dee2e6;
 }
 
 td, th {
-  border: 1px solid rgb(190, 180, 180);
-  padding: 10px 20px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #dee2e6;
 }
 
 th {
-  background-color: rgb(190, 203, 238);
+  background: #f1f3f5;
+  color: #495057;
+  font-weight: 600;
 }
 
-td {
-  text-align: center;
+tr:nth-child(even) {
+  background-color: #f8f9fa;
 }
 
-tr:nth-child(even) td {
-  background-color: rgb(190, 180, 180);
-}
-
-tr:nth-child(odd) td {
-  border: 1px solid rgb(190, 180, 180);
-  padding: 10px 20px;
+tr:hover {
+  background-color: #f1f3f5;
 }
 
 caption {
-  padding: 10px;
+  padding: 15px;
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #495057;
 }
-body{
-	background-size: 1680px 760px;
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
