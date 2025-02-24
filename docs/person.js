@@ -39,11 +39,10 @@ function getPersonList(num){
 }
 
 function randomAddress() {
-  const streets = ["中山路", "解放路", "和平路", "人民路", "长安街", "北京路", "上海路", "广州街", "深圳路", "南京路"];
-  const city = ["北京市", "上海市", "广州市", "深圳市", "成都市", "杭州市", "重庆市", "武汉市", "西安市", "苏州市"];
-  const district = ["东城区", "西城区", "朝阳区", "海淀区", "福田区", "南山区", "天河区", "白云区", "武侯区", "高新区"];
+  const streets = ["中山路", "解放路", "和平路", "人民路", "长安街", "北京路"];
+  const district = ["东城区", "西城区", "朝阳区", "海淀区"];
   const streetNumber = Math.floor(Math.random() * 1000) + 1;
-  return city[Math.floor(Math.random() * city.length)] + 
+  return "北京市" + 
          district[Math.floor(Math.random() * district.length)] + 
          streets[Math.floor(Math.random() * streets.length)] + 
          streetNumber + "号";
