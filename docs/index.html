@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <script type="text/javascript" src="person.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         .container {
             margin: 0 auto;
@@ -31,6 +32,10 @@
             text-align: center;
             margin: 40px 0;
             animation: slideInUp 0.8s;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -55,6 +60,16 @@
         .btn:active {
             transform: translateY(1px);
             box-shadow: 0 4px 15px rgba(98, 0, 234, 0.2);
+        }
+
+        .btn-export {
+            background: #00c853;
+            box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+        }
+
+        .btn-export:hover {
+            background: #00e676;
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
         }
 
         table {
@@ -149,6 +164,80 @@
                 button.textContent = '关灯';
             }
         }
+
+        function exportToExcel() {
+            const table = document.getElementById('table');
+            const tbody = table.querySelector('tbody');
+            
+            // 检查是否有数据
+            if (tbody.rows.length === 0) {
+                alert('请先生成数据再导出！');
+                return;
+            }
+            
+            // 收集表格数据
+            const data = [];
+            
+            // 添加表头
+            const headers = [];
+            const headerCells = table.querySelectorAll('thead th');
+            headerCells.forEach(cell => {
+                headers.push(cell.textContent);
+            });
+            data.push(headers);
+            
+            // 添加数据行
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('td');
+                cells.forEach((cell, index) => {
+                    // 对于备注列（最后一列），获取input的值
+                    if (index === cells.length - 1) {
+                        const input = cell.querySelector('input');
+                        rowData.push(input ? input.value : '');
+                    } else {
+                        rowData.push(cell.textContent);
+                    }
+                });
+                data.push(rowData);
+            });
+            
+            // 创建工作簿
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            
+            // 设置列宽
+            const colWidths = [
+                { wch: 10 },  // 姓名
+                { wch: 20 },  // 身份证号
+                { wch: 15 },  // 手机号
+                { wch: 20 },  // 银行卡号
+                { wch: 12 },  // 车牌号
+                { wch: 12 },  // 车架号
+                { wch: 30 },  // 地址
+                { wch: 15 }   // 备注
+            ];
+            ws['!cols'] = colWidths;
+            
+            // 添加工作表到工作簿
+            XLSX.utils.book_append_sheet(wb, ws, '个人信息');
+            
+            // 生成文件名（使用当前日期时间）
+            const now = new Date();
+            const filename = `个人信息_${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}.xlsx`;
+            
+            // 导出文件
+            XLSX.writeFile(wb, filename);
+            
+            // 显示成功提示和烟花效果
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.5 },
+                colors: ['#00c853', '#00e676', '#69f0ae']
+            });
+        }
     </script>
 </head>
 <body>
@@ -157,6 +246,9 @@
         <div class="btn-container">
             <button class="btn" onclick="generateWithFireworks()">
                 <span>生成信息</span>
+            </button>
+            <button class="btn btn-export" onclick="exportToExcel()">
+                <span>📥 导出到Excel</span>
             </button>
         </div>
         <table id="table">

@@ -13,6 +13,7 @@ function Person (name, idCard, mobile, bankCardNo, plateNo, vin, address) {
 
 function randomPerson(){
   var table =  document.getElementById("table");
+  var tbody = table.querySelector("tbody");
   var persons = getPersonList(1);
   var content = "";
   for(person of persons){
@@ -27,7 +28,7 @@ function randomPerson(){
                               "<td>" + "<input></input>" + "</td>" +
                             "</tr>";
   }
-  table.insertAdjacentHTML('beforeend', content) 
+  tbody.insertAdjacentHTML('beforeend', content) 
 }
 
 function getPersonList(num){
