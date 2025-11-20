@@ -72,6 +72,16 @@
             box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
         }
 
+        .btn-clear {
+            background: #ff5252;
+            box-shadow: 0 4px 20px rgba(255, 82, 82, 0.3);
+        }
+
+        .btn-clear:hover {
+            background: #ff6b6b;
+            box-shadow: 0 8px 25px rgba(255, 82, 82, 0.4);
+        }
+
         table {
             animation: fadeInUp 1s;
             border-radius: 12px;
@@ -249,6 +259,9 @@
             </button>
             <button class="btn btn-export" onclick="exportToExcel()">
                 <span>📥 导出到Excel</span>
+            </button>
+            <button class="btn btn-clear" onclick="clearAllData()">
+                <span>🗑️ 清空数据</span>
             </button>
         </div>
         <table id="table">
