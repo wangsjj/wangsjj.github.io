@@ -37,6 +37,21 @@ export default {
     const path = url.pathname;
 
     try {
+      // 根路径 - 显示 API 信息
+      if (path === '/' && request.method === 'GET') {
+        return jsonResponse({
+          success: true,
+          message: 'Person API is running',
+          endpoints: {
+            'GET /api/persons': '获取所有记录',
+            'POST /api/persons': '新增单条记录',
+            'PUT /api/persons/:id': '更新记录（备注）',
+            'DELETE /api/persons/:id': '删除单条记录',
+            'DELETE /api/persons': '清空所有记录'
+          }
+        });
+      }
+
       // 路由处理
       // GET /api/persons - 获取所有记录
       if (path === '/api/persons' && request.method === 'GET') {
