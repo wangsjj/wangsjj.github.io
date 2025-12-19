@@ -1,7 +1,7 @@
 
 // ==================== API 配置 ====================
 // 请将此地址替换为你的 Cloudflare Workers 部署地址
-const API_BASE_URL = 'https://person-api.wangsjj424.workers.dev/';
+const API_BASE_URL = 'https://person-api.wangsjj424.workers.dev';
 
 // ==================== API 请求函数 ====================
 
