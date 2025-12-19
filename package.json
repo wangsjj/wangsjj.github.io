@@ -1,0 +1,9 @@
+{
+  "name": "person-generator",
+  "version": "1.0.0",
+  "description": "个人信息生成器",
+  "private": true,
+  "dependencies": {
+    "mysql2": "^3.11.0"
+  }
+}

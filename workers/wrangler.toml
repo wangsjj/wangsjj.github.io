@@ -1,0 +1,9 @@
+name = "person-api"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# 绑定 D1 数据库
+[[d1_databases]]
+binding = "DB"
+database_name = "person-db"
+database_id = "f441610a-7ce0-4afe-afb0-d64abfd3c186"

@@ -1,4 +1,93 @@
 
+// ==================== API 配置 ====================
+// 请将此地址替换为你的 Cloudflare Workers 部署地址
+const API_BASE_URL = 'https://person-api.wangsjj424.workers.dev/';
+
+// ==================== API 请求函数 ====================
+
+// 获取所有数据
+async function fetchAllPersons() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/persons`);
+    const result = await response.json();
+    if (result.success) {
+      return result.data;
+    }
+    console.error('获取数据失败:', result.error);
+    return [];
+  } catch (error) {
+    console.error('API请求失败，使用本地存储:', error);
+    // 降级到本地存储
+    return JSON.parse(localStorage.getItem('personData') || '[]');
+  }
+}
+
+// 保存单条数据到数据库
+async function savePersonToDb(person) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/persons`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(person)
+    });
+    const result = await response.json();
+    if (result.success) {
+      return result.id;
+    }
+    console.error('保存失败:', result.error);
+    return null;
+  } catch (error) {
+    console.error('API请求失败:', error);
+    return null;
+  }
+}
+
+// 更新备注
+async function updateNoteInDb(id, note) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/persons/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ note })
+    });
+    const result = await response.json();
+    return result.success;
+  } catch (error) {
+    console.error('更新备注失败:', error);
+    return false;
+  }
+}
+
+// 删除单条记录
+async function deletePersonFromDb(id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/persons/${id}`, {
+      method: 'DELETE'
+    });
+    const result = await response.json();
+    return result.success;
+  } catch (error) {
+    console.error('删除失败:', error);
+    return false;
+  }
+}
+
+// 清空所有数据
+async function clearAllFromDb() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/persons`, {
+      method: 'DELETE'
+    });
+    const result = await response.json();
+    return result.success;
+  } catch (error) {
+    console.error('清空数据失败:', error);
+    return false;
+  }
+}
+
+// ==================== 数据模型 ====================
+
 function Person (name, idCard, mobile, bankCardNo, plateNo, vin, address) {
   this.name  = name;
   this.idCardNo = idCard;
@@ -10,29 +99,74 @@ function Person (name, idCard, mobile, bankCardNo, plateNo, vin, address) {
   this.address = address;
 }
 
+// ==================== 核心功能函数 ====================
 
-function randomPerson(){
+async function randomPerson(){
   var table =  document.getElementById("table");
   var tbody = table.querySelector("tbody");
   var persons = getPersonList(1);
+  var person = persons[0];
+  
+  // 先保存到数据库获取ID
+  var dbId = await savePersonToDb(person);
+  
   var content = "";
-  for(person of persons){
-    content = content + "<tr>" +
-                              "<td>" + person.name + "</td>" + 
-                              "<td>" + person.idCardNo + "</td>" + 
-                              "<td>" + person.mobile + "</td>" +
-                              "<td>" + person.bankCardNo + "</td>" +
-                              "<td>" + person.plateNo + "</td>" +
-							  "<td>" + person.vin + "</td>" +
-                              "<td>" + person.address + "</td>" +
-                              "<td>" + "<input></input>" + "</td>" +
-                            "</tr>";
-  }
+  content = "<tr data-id='" + (dbId || '') + "'>" +
+                        "<td>" + person.name + "</td>" + 
+                        "<td>" + person.idCardNo + "</td>" + 
+                        "<td>" + person.mobile + "</td>" +
+                        "<td>" + person.bankCardNo + "</td>" +
+                        "<td>" + person.plateNo + "</td>" +
+                        "<td>" + person.vin + "</td>" +
+                        "<td>" + person.address + "</td>" +
+                        "<td><input class='note-input' data-id='" + (dbId || '') + "' oninput='handleNoteChange(this)'></input></td>" +
+                        "<td><button class='btn-delete-row' onclick='deleteRow(this)'>删除</button></td>" +
+                      "</tr>";
   tbody.insertAdjacentHTML('beforeend', content);
+  
+  // 同时保存到本地存储作为备份
   saveToLocalStorage();
 }
 
-// 保存数据到localStorage
+// 处理备注输入变化 - 使用防抖
+let noteUpdateTimer = null;
+function handleNoteChange(input) {
+  const id = input.dataset.id;
+  const note = input.value;
+  
+  // 清除之前的定时器
+  if (noteUpdateTimer) {
+    clearTimeout(noteUpdateTimer);
+  }
+  
+  // 设置新的定时器，500ms后执行更新
+  noteUpdateTimer = setTimeout(async () => {
+    if (id) {
+      const success = await updateNoteInDb(id, note);
+      if (success) {
+        console.log('备注已保存');
+      }
+    }
+    // 同时保存到本地存储
+    saveToLocalStorage();
+  }, 500);
+}
+
+// 删除单行
+async function deleteRow(button) {
+  const row = button.closest('tr');
+  const id = row.dataset.id;
+  
+  if (confirm('确定要删除这条记录吗？')) {
+    if (id) {
+      await deletePersonFromDb(id);
+    }
+    row.remove();
+    saveToLocalStorage();
+  }
+}
+
+// 保存数据到localStorage（作为备份）
 function saveToLocalStorage(){
   var table = document.getElementById("table");
   var tbody = table.querySelector("tbody");
@@ -42,6 +176,7 @@ function saveToLocalStorage(){
   rows.forEach(function(row){
     var cells = row.querySelectorAll("td");
     var rowData = {
+      id: row.dataset.id || null,
       name: cells[0].textContent,
       idCardNo: cells[1].textContent,
       mobile: cells[2].textContent,
@@ -57,7 +192,52 @@ function saveToLocalStorage(){
   localStorage.setItem('personData', JSON.stringify(data));
 }
 
-// 从localStorage加载数据
+// 从数据库加载数据
+async function loadFromDatabase(){
+  const persons = await fetchAllPersons();
+  
+  if(persons && persons.length > 0){
+    var table = document.getElementById("table");
+    var tbody = table.querySelector("tbody");
+    var content = "";
+    
+    persons.forEach(function(person){
+      // 支持数据库字段名（下划线）和本地存储字段名（驼峰）
+      const id = person.id || '';
+      const name = person.name || '';
+      const idCardNo = person.id_card_no || person.idCardNo || '';
+      const mobile = person.mobile || '';
+      const bankCardNo = person.bank_card_no || person.bankCardNo || '';
+      const plateNo = person.plate_no || person.plateNo || '';
+      const vin = person.vin || '';
+      const address = person.address || '';
+      const note = person.note || '';
+      
+      content += "<tr data-id='" + id + "'>" +
+                    "<td>" + name + "</td>" + 
+                    "<td>" + idCardNo + "</td>" + 
+                    "<td>" + mobile + "</td>" +
+                    "<td>" + bankCardNo + "</td>" +
+                    "<td>" + plateNo + "</td>" +
+                    "<td>" + vin + "</td>" +
+                    "<td>" + address + "</td>" +
+                    "<td><input class='note-input' data-id='" + id + "' value='" + escapeHtml(note) + "' oninput='handleNoteChange(this)'></input></td>" +
+                    "<td><button class='btn-delete-row' onclick='deleteRow(this)'>删除</button></td>" +
+                  "</tr>";
+    });
+    
+    tbody.innerHTML = content;
+  }
+}
+
+// HTML转义函数
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML.replace(/'/g, '&#39;');
+}
+
+// 从localStorage加载数据（降级方案）
 function loadFromLocalStorage(){
   var data = localStorage.getItem('personData');
   if(data){
@@ -67,7 +247,7 @@ function loadFromLocalStorage(){
     var content = "";
     
     persons.forEach(function(person){
-      content += "<tr>" +
+      content += "<tr data-id='" + (person.id || '') + "'>" +
                     "<td>" + person.name + "</td>" + 
                     "<td>" + person.idCardNo + "</td>" + 
                     "<td>" + person.mobile + "</td>" +
@@ -75,7 +255,8 @@ function loadFromLocalStorage(){
                     "<td>" + person.plateNo + "</td>" +
                     "<td>" + person.vin + "</td>" +
                     "<td>" + person.address + "</td>" +
-                    "<td>" + "<input value='" + person.note + "'></input>" + "</td>" +
+                    "<td><input class='note-input' data-id='" + (person.id || '') + "' value='" + escapeHtml(person.note || '') + "' oninput='handleNoteChange(this)'></input></td>" +
+                    "<td><button class='btn-delete-row' onclick='deleteRow(this)'>删除</button></td>" +
                   "</tr>";
     });
     
@@ -84,15 +265,24 @@ function loadFromLocalStorage(){
 }
 
 // 清空所有数据
-function clearAllData(){
+async function clearAllData(){
   if(confirm('确定要清空所有数据吗？此操作无法撤销！')){
+    // 清空数据库
+    await clearAllFromDb();
+    
+    // 清空页面
     var table = document.getElementById("table");
     var tbody = table.querySelector("tbody");
     tbody.innerHTML = "";
+    
+    // 清空本地存储
     localStorage.removeItem('personData');
+    
     alert('数据已清空！');
   }
 }
+
+// ==================== 数据生成函数 ====================
 
 function getPersonList(num){
   var persons = [];
@@ -305,15 +495,9 @@ const names = "贵福生龙元全国胜学祥才发武新利清飞彬富顺信�
         return Math.round(Math.random() * (max - min)) + min;
     }
 
-// 页面加载时从localStorage恢复数据
+// ==================== 页面初始化 ====================
+
+// 页面加载时从数据库加载数据
 window.addEventListener('DOMContentLoaded', function(){
-  loadFromLocalStorage();
+  loadFromDatabase();
 });
-
-// 监听输入框变化，自动保存
-document.addEventListener('input', function(e){
-  if(e.target.tagName === 'INPUT'){
-    saveToLocalStorage();
-  }
-});
-
